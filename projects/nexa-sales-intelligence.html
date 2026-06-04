@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NEXA Global Sales Intelligence | Taiwo Araoye</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0d1b2a;
+    --navy-mid: #1a2e45;
+    --accent: #3b82f6;
+    --accent-light: #93c5fd;
+    --gold: #f59e0b;
+    --white: #ffffff;
+    --off-white: #f8fafc;
+    --text-muted: #64748b;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(255,255,255,0.04);
+    --chart-1: #3b82f6;
+    --chart-2: #f59e0b;
+    --chart-3: #10b981;
+    --chart-4: #8b5cf6;
+    --chart-5: #ef4444;
+    --chart-6: #06b6d4;
+    --chart-7: #f97316;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem;
+    background: rgba(13,27,42,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-brand { font-weight: 600; font-size: 1rem; color: var(--white); text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--white); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 9rem 2rem 5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .breadcrumb { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+  .breadcrumb a { color: var(--accent-light); text-decoration: none; }
+  .breadcrumb span { margin: 0 0.5rem; }
+
+  .hero-meta { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .tag {
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.05em;
+    padding: 0.3rem 0.8rem; border-radius: 999px;
+    border: 1px solid rgba(59,130,246,0.4);
+    color: var(--accent-light);
+    background: rgba(59,130,246,0.08);
+  }
+  .tag.gold { color: #fcd34d; border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.08); }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+  }
+  h1 em { font-style: italic; color: var(--accent-light); }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.65);
+    max-width: 640px;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.7rem 1.5rem; border-radius: 8px;
+    background: var(--accent); color: var(--white);
+    font-weight: 500; font-size: 0.9rem; text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.7rem 1.5rem; border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2); color: var(--white);
+    font-weight: 500; font-size: 0.9rem; text-decoration: none;
+    transition: background 0.2s;
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.06); }
+
+  /* ── SECTIONS ── */
+  section { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+  .section-label {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent-light);
+    margin-bottom: 0.75rem;
+  }
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    margin-bottom: 1rem;
+  }
+  p { color: rgba(255,255,255,0.7); line-height: 1.75; margin-bottom: 1rem; }
+
+  /* ── KPI STRIP ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2.5rem 0;
+  }
+  .kpi-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+  }
+  .kpi-label { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+  .kpi-value { font-size: 1.7rem; font-weight: 600; color: var(--white); }
+  .kpi-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+  /* ── DASHBOARD EMBED ── */
+  .dashboard-wrapper {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 2rem 0;
+  }
+  .dashboard-toolbar {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ef4444; }
+  .dot-y { background: #f59e0b; }
+  .dot-g { background: #10b981; }
+  .db-title { font-size: 0.8rem; color: var(--text-muted); margin-left: 0.5rem; }
+  .dashboard-inner { padding: 1.5rem; }
+
+  /* ── TABS ── */
+  .tabs { display: flex; gap: 0.25rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+  .tab-btn {
+    padding: 0.6rem 1.2rem; border: none; background: none;
+    color: var(--text-muted); font-size: 0.85rem; cursor: pointer;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.2s;
+  }
+  .tab-btn:hover { color: var(--white); }
+  .tab-btn.active { color: var(--accent-light); border-bottom-color: var(--accent); }
+
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* ── CHART PANELS ── */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .chart-panel {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+  }
+  .chart-panel.full { grid-column: 1 / -1; }
+  .chart-title { font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.8); margin-bottom: 1rem; }
+
+  /* ── FILTER STRIP ── */
+  .filter-strip {
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+  .filter-btn {
+    padding: 0.35rem 0.9rem; border-radius: 999px;
+    border: 1px solid var(--border);
+    background: none; color: var(--text-muted);
+    font-size: 0.75rem; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: rgba(59,130,246,0.15);
+    border-color: var(--accent);
+    color: var(--accent-light);
+  }
+
+  /* ── STATUS LEGEND ── */
+  .legend { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; color: var(--text-muted); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+  /* ── FINDINGS ── */
+  .findings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+  .finding-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .finding-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3rem;
+    color: rgba(59,130,246,0.18);
+    position: absolute; top: 0.5rem; right: 1rem;
+    line-height: 1;
+  }
+  .finding-title { font-size: 0.85rem; font-weight: 600; color: var(--white); margin-bottom: 0.5rem; }
+  .finding-body { font-size: 0.82rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+  /* ── RECOMMENDATIONS ── */
+  .reco-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin: 1.5rem 0; }
+  .reco-item {
+    display: flex; gap: 1rem; align-items: flex-start;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+  }
+  .reco-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(59,130,246,0.15);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 1rem;
+  }
+  .reco-title { font-size: 0.85rem; font-weight: 600; color: var(--white); margin-bottom: 0.25rem; }
+  .reco-body { font-size: 0.8rem; color: rgba(255,255,255,0.55); line-height: 1.6; }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  footer a { color: var(--accent-light); text-decoration: none; }
+
+  /* ── SCATTER CANVAS ── */
+  canvas { display: block; }
+
+  @media (max-width: 640px) {
+    .charts-grid { grid-template-columns: 1fr; }
+    nav { padding: 1rem; }
+    .nav-links { gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="https://chosen2014.github.io/">Taiwo.Araoye</a>
+  <ul class="nav-links">
+    <li><a href="https://chosen2014.github.io/#projects">Projects</a></li>
+    <li><a href="https://chosen2014.github.io/#skills">Skills</a></li>
+    <li><a href="https://chosen2014.github.io/#about">About</a></li>
+    <li><a href="https://chosen2014.github.io/#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="breadcrumb">
+    <a href="https://chosen2014.github.io/">Home</a>
+    <span>›</span>
+    <a href="https://chosen2014.github.io/#projects">Projects</a>
+    <span>›</span>
+    NEXA Global Sales Intelligence
+  </p>
+
+  <div class="hero-meta">
+    <span class="tag">Power BI</span>
+    <span class="tag">Data Analytics</span>
+    <span class="tag">International Sales</span>
+    <span class="tag gold">Assignment 3</span>
+  </div>
+
+  <h1>NEXA Global Sales<br /><em>Intelligence</em></h1>
+
+  <p class="hero-sub">
+    An interactive two-page Power BI dashboard diagnosing a 62.1% revenue collapse across 19 countries — using advanced visualisations including Treemap, Waterfall, Funnel, Key Influencers, Decomposition Tree, and Scatter Plot.
+  </p>
+
+  <div class="hero-actions">
+    <a class="btn-primary" href="https://app.powerbi.com/groups/me/reports/7fe8d1ba-22a4-4736-a91d-1d7edec5431f?pbi_source=desktop" target="_blank" rel="noopener">
+      ↗ View Live Dashboard
+    </a>
+    <a class="btn-outline" href="#dashboard">Explore Preview ↓</a>
+  </div>
+</div>
+
+<!-- KPI STRIP -->
+<section>
+  <p class="section-label">Performance Overview</p>
+  <h2>NEXA at a Glance</h2>
+  <p>NEXA Global Sales Intelligence is a hypothetical B2B distributor of collectible scale models operating across 19 countries in four global territories. The dataset spans 2,823 transactions from 2003–2005.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">TOTAL REVENUE</div>
+      <div class="kpi-value">$10.03M</div>
+      <div class="kpi-sub">Across all three years</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TOTAL UNITS SOLD</div>
+      <div class="kpi-value">99,067</div>
+      <div class="kpi-sub">Across all product lines</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">TOTAL ORDERS</div>
+      <div class="kpi-value">2,823</div>
+      <div class="kpi-sub">19 countries, 4 territories</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">AVG UNIT PRICE</div>
+      <div class="kpi-value">$83.66</div>
+      <div class="kpi-sub">Per unit across all lines</div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERACTIVE DASHBOARD SECTION -->
+<section id="dashboard">
+  <p class="section-label">Interactive Preview</p>
+  <h2>Dashboard Explorer</h2>
+  <p>This interactive replica mirrors the Power BI dashboard's key charts. Filter by year or product line and explore the same insights used in the report. Open the live dashboard above for the full two-page experience.</p>
+
+  <div class="dashboard-wrapper">
+    <div class="dashboard-toolbar">
+      <div class="dot dot-r"></div>
+      <div class="dot dot-y"></div>
+      <div class="dot dot-g"></div>
+      <span class="db-title">NEXA Global Sales Intelligence · Portfolio Preview</span>
+    </div>
+
+    <div class="dashboard-inner">
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
+        <button class="tab-btn" onclick="switchTab('product')">Product Analysis</button>
+        <button class="tab-btn" onclick="switchTab('geo')">Geography</button>
+        <button class="tab-btn" onclick="switchTab('orders')">Order Status</button>
+      </div>
+
+      <!-- FILTER STRIP -->
+      <div class="filter-strip">
+        <span style="font-size:0.75rem;color:var(--text-muted);align-self:center;margin-right:0.25rem;">Filter by year:</span>
+        <button class="filter-btn active" onclick="setYear('all', this)">All Years</button>
+        <button class="filter-btn" onclick="setYear('2003', this)">2003</button>
+        <button class="filter-btn" onclick="setYear('2004', this)">2004</button>
+        <button class="filter-btn" onclick="setYear('2005', this)">2005</button>
+      </div>
+
+      <!-- TAB: OVERVIEW -->
+      <div id="tab-overview" class="tab-pane active">
+        <div class="charts-grid">
+          <div class="chart-panel full">
+            <div class="chart-title">Monthly Revenue Trend (Year-on-Year)</div>
+            <div style="position:relative;height:260px;">
+              <canvas id="lineChart" role="img" aria-label="Monthly revenue trend by year 2003 2004 2005"></canvas>
+            </div>
+          </div>
+          <div class="chart-panel">
+            <div class="chart-title">Revenue by Year — Waterfall</div>
+            <div style="position:relative;height:200px;">
+              <canvas id="waterfallChart" role="img" aria-label="Year on year revenue waterfall chart"></canvas>
+            </div>
+          </div>
+          <div class="chart-panel">
+            <div class="chart-title">Deal Size Breakdown</div>
+            <div style="position:relative;height:200px;">
+              <canvas id="dealChart" role="img" aria-label="Revenue breakdown by deal size small medium large"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: PRODUCT -->
+      <div id="tab-product" class="tab-pane">
+        <div class="charts-grid">
+          <div class="chart-panel full">
+            <div class="chart-title">Sales by Product Line (Treemap-style bar)</div>
+            <div id="treemapContainer"></div>
+          </div>
+          <div class="chart-panel full">
+            <div class="chart-title">Order Quantity vs Revenue by Product Line (Scatter Plot)</div>
+            <div style="position:relative;height:260px;">
+              <canvas id="scatterChart" role="img" aria-label="Scatter plot of units ordered against total revenue by product line"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: GEO -->
+      <div id="tab-geo" class="tab-pane">
+        <div class="chart-panel full" style="margin-bottom:1rem;">
+          <div class="chart-title">Revenue by Country — Top 10</div>
+          <div style="position:relative;height:320px;">
+            <canvas id="geoChart" role="img" aria-label="Horizontal bar chart of top 10 countries by revenue"></canvas>
+          </div>
+        </div>
+        <div class="chart-panel full">
+          <div class="chart-title">Revenue by Territory</div>
+          <div style="position:relative;height:180px;">
+            <canvas id="territoryChart" role="img" aria-label="Revenue by sales territory"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: ORDERS -->
+      <div id="tab-orders" class="tab-pane">
+        <div class="charts-grid">
+          <div class="chart-panel">
+            <div class="chart-title">Revenue by Order Status (Funnel)</div>
+            <div id="funnelContainer" style="padding-top:0.5rem;"></div>
+          </div>
+          <div class="chart-panel">
+            <div class="chart-title">Key Insight — Revenue at Risk</div>
+            <div style="padding:1rem 0;">
+              <div style="font-size:2rem;font-weight:600;color:#ef4444;">$440,207</div>
+              <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem;">Revenue tied up in non-shipped orders</div>
+              <hr class="divider" style="margin:1rem 0;" />
+              <div style="display:flex;flex-direction:column;gap:0.6rem;">
+                <div style="display:flex;justify-content:space-between;font-size:0.8rem;">
+                  <span style="color:rgba(255,255,255,0.6);">Cancelled orders</span>
+                  <span style="color:#ef4444;font-weight:500;">$194,487</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:0.8rem;">
+                  <span style="color:rgba(255,255,255,0.6);">On Hold</span>
+                  <span style="color:#f59e0b;font-weight:500;">$178,979</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:0.8rem;">
+                  <span style="color:rgba(255,255,255,0.6);">Disputed</span>
+                  <span style="color:#8b5cf6;font-weight:500;">$72,213</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-top:0.25rem;padding-top:0.5rem;border-top:1px solid var(--border);">
+                  <span style="color:rgba(255,255,255,0.6);">Successfully Shipped</span>
+                  <span style="color:#10b981;font-weight:600;">$9,291,501</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- KEY FINDINGS -->
+<section>
+  <p class="section-label">Analysis</p>
+  <h2>Key Findings</h2>
+  <p>The dashboard revealed three structural performance issues that together formed the case for strategic intervention.</p>
+
+  <div class="findings-grid">
+    <div class="finding-card">
+      <div class="finding-num">01</div>
+      <div class="finding-title">Revenue Collapse of 62.1%</div>
+      <div class="finding-body">Revenue peaked at $4.72M in 2004 before falling sharply to $1.79M in 2005 — a 62.1% decline, and 2005 data only covers five months (Jan–May), suggesting the underlying trend was even more severe than the figures indicate.</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-num">02</div>
+      <div class="finding-title">Dangerous Product Concentration</div>
+      <div class="finding-body">Classic Cars alone generated $3.92M — 39.1% of total revenue. With just one product line carrying nearly 40% of revenue, any market disruption to that category poses an existential risk to NEXA's financial performance.</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-num">03</div>
+      <div class="finding-title">$440K Revenue at Risk</div>
+      <div class="finding-body">Cancelled, On Hold, and Disputed orders account for over $440,000 in potential lost revenue — 4.4% of the total. Systemic fulfilment and customer relationship issues are likely drivers of this recoverable loss.</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-num">04</div>
+      <div class="finding-title">USA Dominates at 36.2%</div>
+      <div class="finding-body">The United States accounts for $3.63M — 36.2% of total revenue. North America as a territory is NEXA's backbone, while APAC and Japan remain significantly underpenetrated relative to their market potential.</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-num">05</div>
+      <div class="finding-title">November is Peak Month</div>
+      <div class="finding-body">November consistently generates the highest monthly revenue ($2.12M across all years), followed by October — pointing to Q4 seasonal demand cycles. Revenue in June and July is significantly lower, indicating a predictable summer trough.</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-num">06</div>
+      <div class="finding-title">Large Deals Driven by Volume</div>
+      <div class="finding-body">The Key Influencers visual confirms that higher total units sold increases the likelihood of a Large deal size by 5.36×. Classic Cars specifically make a deal 3.10× more likely to be classified as Large — reinforcing both a growth pathway and a concentration risk.</div>
+    </div>
+  </div>
+</section>
+
+<!-- RECOMMENDATIONS -->
+<section>
+  <p class="section-label">Strategic Recommendations</p>
+  <h2>What NEXA Should Do</h2>
+  <p>Based on the dashboard analysis, six evidence-based recommendations were developed to address NEXA's structural vulnerabilities.</p>
+
+  <ul class="reco-list">
+    <li class="reco-item">
+      <div class="reco-icon">📦</div>
+      <div>
+        <div class="reco-title">Diversify product portfolio beyond Classic Cars</div>
+        <div class="reco-body">Classic Cars at 39.1% is a systemic single-point-of-failure. NEXA should invest marketing and distribution capacity in Vintage Cars and Motorcycles — both have demonstrated strong unit volumes — to reduce concentration risk to below 25% for any single line.</div>
+      </div>
+    </li>
+    <li class="reco-item">
+      <div class="reco-icon">🌏</div>
+      <div>
+        <div class="reco-title">Aggressively expand APAC and Japan presence</div>
+        <div class="reco-body">Asia Pacific and Japan together contribute less than 10% of revenue despite being large collector markets. Partnering with local distributors in Singapore, the Philippines, and Australia (all existing markets) would be a lower-risk entry strategy with proven demand signals.</div>
+      </div>
+    </li>
+    <li class="reco-item">
+      <div class="reco-icon">🔧</div>
+      <div>
+        <div class="reco-title">Resolve fulfilment gaps causing $440K in lost revenue</div>
+        <div class="reco-body">A root-cause audit of Cancelled and On Hold orders should be the first operational priority. Addressing payment terms, shipping logistics, or credit disputes is likely to unlock a meaningful portion of that revenue without requiring new customers.</div>
+      </div>
+    </li>
+    <li class="reco-item">
+      <div class="reco-icon">📅</div>
+      <div>
+        <div class="reco-title">Build a seasonal demand strategy around Q4 peaks</div>
+        <div class="reco-body">November and October consistently outperform all other months. NEXA should pre-position inventory, pre-negotiate bulk shipments, and run targeted promotions in June–August to smooth the summer revenue trough and reduce quarterly volatility.</div>
+      </div>
+    </li>
+    <li class="reco-item">
+      <div class="reco-icon">🤝</div>
+      <div>
+        <div class="reco-title">Prioritise large-deal customer relationships</div>
+        <div class="reco-body">Large deals ($1.3M total) carry the highest revenue per transaction. The data confirms large deals are driven by volume orders on Classic Cars. A key account management programme targeting NEXA's top 20 customers by order size would protect and grow this segment.</div>
+      </div>
+    </li>
+    <li class="reco-item">
+      <div class="reco-icon">📊</div>
+      <div>
+        <div class="reco-title">Investigate the 2004–2005 revenue collapse drivers</div>
+        <div class="reco-body">The 62.1% decline from 2004 to 2005 is not explained by the current dataset alone. Supplementing with cost, margin, and customer churn data would allow a full diagnostic. Until then, all strategic decisions carry uncertainty about whether the decline reflects market, operational, or data-collection factors.</div>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- CHARTS: methodology strip -->
+<section>
+  <p class="section-label">Visualisations Used</p>
+  <h2>Dashboard Design Choices</h2>
+  <p>Each chart type was selected to match the analytical question it answers — avoiding generic defaults in favour of advanced Power BI visuals.</p>
+
+  <div class="findings-grid">
+    <div class="finding-card">
+      <div class="finding-title">🗺 Map Chart</div>
+      <div class="finding-body">Geographically plots 19 countries by bubble size (revenue), giving executives an instant global footprint view without reading tables.</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-title">🌳 Treemap</div>
+      <div class="finding-body">Encodes product line revenue as proportional rectangles. Classic Cars' dominance becomes visually self-evident — impossible to miss or misread.</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-title">📉 Waterfall Chart</div>
+      <div class="finding-body">Shows year-on-year revenue change with increase/decrease/total bars. The 2005 collapse reads as a dramatic downward step — far more impactful than a line.</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-title">🔽 Funnel Chart</div>
+      <div class="finding-body">Visualises revenue by order status from Shipped (largest) down through disputed and in-process orders — directly quantifying the fulfilment efficiency gap.</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-title">🎯 Key Influencers</div>
+      <div class="finding-body">Power BI's AI visual identifies what factors most increase the probability of a Large deal size — revealing the 5.36× volume multiplier and the Classic Cars effect.</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-title">⚡ Scatter Plot</div>
+      <div class="finding-body">Plots units ordered against revenue for each product line — immediately showing which lines achieve revenue efficiency (high value per unit) vs. high volume but lower price.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Taiwo Araoye · <a href="https://chosen2014.github.io/">chosen2014.github.io</a></p>
+  <p style="margin-top:0.5rem;">Data: Kaggle sample sales dataset · Dashboard: Microsoft Power BI · Report: Data Analytics Professional Development Programme, Assignment 3</p>
+</footer>
+
+<!-- CHART.JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+
+<script>
+/* ─────────────────────────────────────────────
+   DATA (extracted from SALES_DATA_SAMPLE CSV)
+───────────────────────────────────────────── */
+const DATA = {
+  monthlyByYear: {
+    2003: {1:129754,2:140836,3:174505,4:201610,5:192673,6:168083,7:187732,8:197809,9:263973,10:568291,11:1029838,12:261876},
+    2004: {1:316577,2:311420,3:205734,4:206148,5:273438,6:286674,7:327144,8:461501,9:320751,10:552924,11:1089048,12:372803},
+    2005: {1:339543,2:358186,3:374263,4:261633,5:457861}
+  },
+  byYear:    {2003:3516980,2004:4724163,2005:1791487},
+  byProduct: {
+    'Classic Cars':   3919616,
+    'Vintage Cars':   1903151,
+    'Motorcycles':    1166388,
+    'Trucks & Buses': 1127790,
+    'Planes':          975004,
+    'Ships':           714437,
+    'Trains':          226243
+  },
+  productUnits: {
+    'Classic Cars':   33992,
+    'Vintage Cars':   21081,
+    'Motorcycles':    11663,
+    'Trucks & Buses': 10777,
+    'Planes':          10727,
+    'Ships':           8127,
+    'Trains':          2700
+  },
+  byCountry: {
+    'USA':         3627983,'Spain':1215687,'France':1110917,
+    'Australia':    630623,'UK':478880,'Italy':374674,
+    'Finland':      329582,'Norway':307464,'Singapore':288488,'Denmark':245637
+  },
+  byTerritory: {'North America':3627983,'EMEA':4793424,'APAC':990117,'Japan':621105},
+  byStatus:    {Shipped:9291501,Cancelled:194487,'In Process':144730,'On Hold':178979,Resolved:150718,Disputed:72213},
+  byDeal:      {Large:1302119,Medium:6087432,Small:2643077}
+};
+
+let activeYear = 'all';
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const COLORS  = ['#3b82f6','#f59e0b','#10b981','#8b5cf6','#ef4444','#06b6d4','#f97316'];
+const PCOLS   = ['#3b82f6','#f59e0b','#10b981','#8b5cf6','#ef4444','#06b6d4','#f97316'];
+
+/* ─── CHART INSTANCES ─── */
+let lineInst, waterfallInst, dealInst, scatterInst, geoInst, territoryInst;
+
+function fmt(n) {
+  if (n >= 1e6) return '$' + (n/1e6).toFixed(2) + 'M';
+  if (n >= 1e3) return '$' + Math.round(n/1e3) + 'K';
+  return '$' + Math.round(n);
+}
+
+/* ─── YEAR FILTER ─── */
+function setYear(yr, btn) {
+  activeYear = yr;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  rebuildCharts();
+}
+
+function filteredMonthly() {
+  const years = activeYear === 'all' ? [2003,2004,2005] : [parseInt(activeYear)];
+  const result = {};
+  for (let m = 1; m <= 12; m++) {
+    result[m] = years.reduce((acc, y) => acc + (DATA.monthlyByYear[y]?.[m] || 0), 0);
+  }
+  return result;
+}
+
+/* ─── TABS ─── */
+function switchTab(name) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+  setTimeout(rebuildCharts, 50);
+}
+
+/* ─── BUILD LINE CHART ─── */
+function buildLine() {
+  const ctx = document.getElementById('lineChart');
+  if (!ctx) return;
+  if (lineInst) lineInst.destroy();
+  const years = activeYear === 'all' ? [2003,2004,2005] : [parseInt(activeYear)];
+  const datasets = years.map((y,i) => {
+    const months = Object.keys(DATA.monthlyByYear[y]).map(Number).sort((a,b)=>a-b);
+    return {
+      label: String(y),
+      data: months.map(m => ({ x: m, y: DATA.monthlyByYear[y][m] })),
+      borderColor: COLORS[i],
+      backgroundColor: COLORS[i] + '22',
+      fill: false, tension: 0.3,
+      pointRadius: 4, pointHoverRadius: 6,
+      borderDash: i === 2 ? [5,3] : []
+    };
+  });
+  lineInst = new Chart(ctx, {
+    type: 'line',
+    data: { datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      scales: {
+        x: { type:'linear', min:1, max:12, ticks:{ callback: v => MONTHS[v-1], stepSize:1, autoSkip:false }, grid:{color:'rgba(255,255,255,0.05)'}, border:{color:'rgba(255,255,255,0.1)'} },
+        y: { ticks:{ callback: v => fmt(v), color:'#64748b' }, grid:{color:'rgba(255,255,255,0.05)'}, border:{color:'rgba(255,255,255,0.1)'} }
+      },
+      plugins: {
+        legend:{ labels:{ color:'#94a3b8', boxWidth:12, font:{size:12} } },
+        tooltip:{ callbacks:{ label: ctx => ctx.dataset.label + ': ' + fmt(ctx.parsed.y) } }
+      }
+    }
+  });
+}
+
+/* ─── BUILD WATERFALL ─── */
+function buildWaterfall() {
+  const ctx = document.getElementById('waterfallChart');
+  if (!ctx) return;
+  if (waterfallInst) waterfallInst.destroy();
+  const labels = ['2003','2004 ▲','2005 ▼','Total'];
+  const values = [DATA.byYear[2003], DATA.byYear[2004], DATA.byYear[2005], Object.values(DATA.byYear).reduce((a,b)=>a+b,0)];
+  const colors = ['#3b82f6','#10b981','#ef4444','#f59e0b'];
+  waterfallInst = new Chart(ctx, {
+    type: 'bar',
+    data: { labels, datasets:[{ data: values, backgroundColor: colors, borderRadius:6 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend:{display:false}, tooltip:{ callbacks:{ label: ctx => fmt(ctx.parsed.y) } } },
+      scales: {
+        x: { ticks:{color:'#94a3b8',font:{size:11}}, grid:{color:'rgba(255,255,255,0.05)'}, border:{color:'rgba(255,255,255,0.1)'} },
+        y: { ticks:{callback: v => fmt(v), color:'#64748b'}, grid:{color:'rgba(255,255,255,0.05)'}, border:{color:'rgba(255,255,255,0.1)'} }
+      }
+    }
+  });
+}
+
+/* ─── BUILD DEAL CHART ─── */
+function buildDeal() {
+  const ctx = document.getElementById('dealChart');
+  if (!ctx) return;
+  if (dealInst) dealInst.destroy();
+  dealInst = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Medium','Small','Large'],
+      datasets:[{ data:[DATA.byDeal.Medium, DATA.byDeal.Small, DATA.byDeal.Large],
+        backgroundColor:['#3b82f6','#10b981','#f59e0b'], borderWidth:0 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend:{ position:'right', labels:{color:'#94a3b8', boxWidth:12, font:{size:11} } },
+        tooltip:{ callbacks:{ label: ctx => ctx.label + ': ' + fmt(ctx.parsed) } }
+      }
+    }
+  });
+}
+
+/* ─── BUILD TREEMAP (custom) ─── */
+function buildTreemap() {
+  const container = document.getElementById('treemapContainer');
+  if (!container) return;
+  container.innerHTML = '';
+  const total = Object.values(DATA.byProduct).reduce((a,b)=>a+b,0);
+  const sorted = Object.entries(DATA.byProduct).sort((a,b)=>b[1]-a[1]);
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
+  sorted.forEach(([name, val], i) => {
+    const pct = val / total * 100;
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:10px;';
+    const label = document.createElement('div');
+    label.style.cssText = 'font-size:0.75rem;color:rgba(255,255,255,0.7);width:130px;flex-shrink:0;text-align:right;';
+    label.textContent = name;
+    const barWrap = document.createElement('div');
+    barWrap.style.cssText = 'flex:1;background:rgba(255,255,255,0.06);border-radius:4px;height:22px;overflow:hidden;';
+    const bar = document.createElement('div');
+    bar.style.cssText = `width:${pct}%;height:100%;background:${PCOLS[i]};border-radius:4px;transition:width 0.6s ease;display:flex;align-items:center;padding-left:8px;`;
+    const valLabel = document.createElement('span');
+    valLabel.style.cssText = 'font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.9);white-space:nowrap;';
+    valLabel.textContent = fmt(val) + ' (' + pct.toFixed(1) + '%)';
+    bar.appendChild(valLabel);
+    barWrap.appendChild(bar);
+    row.appendChild(label); row.appendChild(barWrap);
+    wrapper.appendChild(row);
+  });
+  container.appendChild(wrapper);
+}
+
+/* ─── BUILD SCATTER ─── */
+function buildScatter() {
+  const ctx = document.getElementById('scatterChart');
+  if (!ctx) return;
+  if (scatterInst) scatterInst.destroy();
+  const products = Object.keys(DATA.byProduct);
+  const datasets = products.map((p, i) => ({
+    label: p,
+    data: [{ x: DATA.productUnits[p], y: DATA.byProduct[p] }],
+    backgroundColor: PCOLS[i] + 'cc',
+    borderColor: PCOLS[i],
+    pointRadius: 10, pointHoverRadius: 14
+  }));
+  scatterInst = new Chart(ctx, {
+    type: 'scatter',
+    data: { datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      scales: {
+        x: { title:{display:true,text:'Total Units Ordered',color:'#64748b',font:{size:11}}, ticks:{color:'#64748b'}, grid:{color:'rgba(255,255,255,0.05)'}, border:{color:'rgba(255,255,255,0.1)'}, min:0, max:38000 },
+        y: { title:{display:true,text:'Total Revenue',color:'#64748b',font:{size:11}}, ticks:{callback:v=>fmt(v),color:'#64748b'}, grid:{color:'rgba(255,255,255,0.05)'}, border:{color:'rgba(255,255,255,0.1)'}, min:0, max:4500000 }
+      },
+      plugins: {
+        legend:{ labels:{color:'#94a3b8',boxWidth:12,font:{size:11}} },
+        tooltip:{ callbacks:{ label: ctx => ctx.dataset.label + ': ' + ctx.parsed.x.toLocaleString() + ' units, ' + fmt(ctx.parsed.y) } }
+      }
+    }
+  });
+}
+
+/* ─── BUILD GEO CHART ─── */
+function buildGeo() {
+  const ctx = document.getElementById('geoChart');
+  if (!ctx) return;
+  if (geoInst) geoInst.destroy();
+  const countries = Object.keys(DATA.byCountry);
+  const values = Object.values(DATA.byCountry);
+  geoInst = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: countries,
+      datasets:[{ data: values, backgroundColor: countries.map((_,i)=>COLORS[i%COLORS.length]+'cc'), borderRadius:4 }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend:{display:false}, tooltip:{ callbacks:{ label: ctx => fmt(ctx.parsed.x) } } },
+      scales: {
+        x: { ticks:{callback:v=>fmt(v),color:'#64748b'}, grid:{color:'rgba(255,255,255,0.05)'}, border:{color:'rgba(255,255,255,0.1)'} },
+        y: { ticks:{color:'#94a3b8',font:{size:11}}, grid:{color:'rgba(255,255,255,0.05)'}, border:{color:'rgba(255,255,255,0.1)'} }
+      }
+    }
+  });
+}
+
+/* ─── BUILD TERRITORY ─── */
+function buildTerritory() {
+  const ctx = document.getElementById('territoryChart');
+  if (!ctx) return;
+  if (territoryInst) territoryInst.destroy();
+  territoryInst = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: Object.keys(DATA.byTerritory),
+      datasets:[{ data:Object.values(DATA.byTerritory), backgroundColor:['#3b82f6','#f59e0b','#10b981','#8b5cf6'], borderRadius:6 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend:{display:false}, tooltip:{ callbacks:{ label: ctx => fmt(ctx.parsed.y) } } },
+      scales: {
+        x: { ticks:{color:'#94a3b8',font:{size:11}}, grid:{color:'rgba(255,255,255,0.05)'}, border:{color:'rgba(255,255,255,0.1)'} },
+        y: { ticks:{callback:v=>fmt(v),color:'#64748b'}, grid:{color:'rgba(255,255,255,0.05)'}, border:{color:'rgba(255,255,255,0.1)'} }
+      }
+    }
+  });
+}
+
+/* ─── BUILD FUNNEL ─── */
+function buildFunnel() {
+  const container = document.getElementById('funnelContainer');
+  if (!container) return;
+  container.innerHTML = '';
+  const statuses = [
+    {name:'Shipped', val:DATA.byStatus.Shipped, color:'#10b981'},
+    {name:'In Process', val:DATA.byStatus['In Process'], color:'#3b82f6'},
+    {name:'Resolved', val:DATA.byStatus.Resolved, color:'#8b5cf6'},
+    {name:'Cancelled', val:DATA.byStatus.Cancelled, color:'#ef4444'},
+    {name:'On Hold', val:DATA.byStatus['On Hold'], color:'#f59e0b'},
+    {name:'Disputed', val:DATA.byStatus.Disputed, color:'#f97316'}
+  ];
+  const max = statuses[0].val;
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'display:flex;flex-direction:column;gap:5px;align-items:center;';
+  statuses.forEach((s, i) => {
+    const pct = s.val / max * 100;
+    const width = 100 - i * 10;
+    const row = document.createElement('div');
+    row.style.cssText = `width:${width}%;`;
+    const bar = document.createElement('div');
+    bar.style.cssText = `background:${s.color};border-radius:4px;padding:4px 10px;display:flex;justify-content:space-between;align-items:center;`;
+    bar.innerHTML = `<span style="font-size:0.72rem;color:#fff;font-weight:500;">${s.name}</span><span style="font-size:0.72rem;color:rgba(255,255,255,0.85);">${fmt(s.val)}</span>`;
+    row.appendChild(bar);
+    wrapper.appendChild(row);
+  });
+  container.appendChild(wrapper);
+}
+
+/* ─── REBUILD ALL VISIBLE ─── */
+function rebuildCharts() {
+  const active = document.querySelector('.tab-pane.active')?.id;
+  if (!active || active === 'tab-overview') { buildLine(); buildWaterfall(); buildDeal(); }
+  if (active === 'tab-product') { buildTreemap(); buildScatter(); }
+  if (active === 'tab-geo') { buildGeo(); buildTerritory(); }
+  if (active === 'tab-orders') { buildFunnel(); }
+}
+
+window.addEventListener('load', () => { rebuildCharts(); });
+</script>
+
+</body>
+</html>
