@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Core Banking Analytics | Taiwo Araoye</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0f172a;
+      --navy-mid: #1e293b;
+      --navy-light: #334155;
+      --accent: #38bdf8;
+      --accent-dim: #0ea5e9;
+      --white: #f8fafc;
+      --muted: #94a3b8;
+      --border: #1e293b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem 4rem;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem;
+      letter-spacing: 0.05em; color: var(--white); text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-back {
+      color: var(--muted); text-decoration: none; font-size: 0.9rem;
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+    .nav-back::before { content: '←'; }
+
+    /* HERO */
+    .project-hero {
+      padding: 9rem 4rem 5rem;
+      max-width: 1100px; margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .breadcrumb {
+      font-size: 0.8rem; color: var(--muted);
+      letter-spacing: 0.08em; margin-bottom: 1.5rem;
+    }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+
+    .project-tags {
+      display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+    }
+
+    .tag {
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.25rem 0.7rem; border-radius: 2rem;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: var(--accent);
+    }
+
+    .project-hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4.5vw, 3.5rem);
+      font-weight: 800; line-height: 1.15;
+      letter-spacing: -0.02em; margin-bottom: 1.25rem;
+    }
+
+    .project-hero .lead {
+      font-size: 1.1rem; color: var(--muted);
+      max-width: 680px; line-height: 1.8; margin-bottom: 2.5rem;
+    }
+
+    .project-meta {
+      display: flex; gap: 3rem; flex-wrap: wrap;
+    }
+
+    .meta-item { }
+    .meta-label {
+      font-size: 0.72rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+    .meta-value {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600; font-size: 0.95rem;
+    }
+
+    /* LAYOUT */
+    .content-wrap {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 300px;
+      gap: 5rem; padding: 4rem 4rem;
+      align-items: start;
+    }
+
+    /* MAIN CONTENT */
+    .main-content { min-width: 0; }
+
+    .section-block { margin-bottom: 4rem; }
+
+    .block-label {
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.75rem;
+    }
+
+    .block-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem; font-weight: 700;
+      margin-bottom: 1.25rem; line-height: 1.3;
+    }
+
+    .body-text {
+      color: var(--muted); font-size: 0.95rem;
+      line-height: 1.85; margin-bottom: 1rem;
+    }
+
+    /* FINDING CARDS */
+    .findings-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1rem; margin-top: 1.5rem;
+    }
+
+    .finding-card {
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      border-radius: 0.6rem; padding: 1.25rem;
+      border-left: 3px solid var(--accent);
+    }
+
+    .finding-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem; font-weight: 800;
+      color: var(--accent); line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .finding-label {
+      font-size: 0.82rem; color: var(--muted); line-height: 1.5;
+    }
+
+    /* PROCESS STEPS */
+    .process-steps { margin-top: 1.5rem; }
+
+    .step {
+      display: flex; gap: 1.25rem; margin-bottom: 1.75rem;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-size: 0.78rem;
+      font-weight: 700; color: var(--accent);
+      flex-shrink: 0; margin-top: 0.1rem;
+    }
+
+    .step-content h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem; font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .step-content p {
+      font-size: 0.88rem; color: var(--muted); line-height: 1.7;
+    }
+
+    /* ISSUE/RESOLUTION BLOCKS */
+    .issue-block {
+      background: rgba(239, 68, 68, 0.06);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-left: 3px solid #ef4444;
+      border-radius: 0.5rem; padding: 1rem 1.25rem;
+      margin: 1rem 0; font-size: 0.88rem;
+    }
+
+    .issue-block strong { color: #fca5a5; display: block; margin-bottom: 0.3rem; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .resolution-block {
+      background: rgba(34, 197, 94, 0.06);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-left: 3px solid #22c55e;
+      border-radius: 0.5rem; padding: 1rem 1.25rem;
+      margin: 1rem 0; font-size: 0.88rem;
+    }
+
+    .resolution-block strong { color: #86efac; display: block; margin-bottom: 0.3rem; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    /* CODE BLOCK */
+    .code-block {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem; padding: 1.25rem 1.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.82rem; color: #7dd3fc;
+      margin: 1rem 0; overflow-x: auto; line-height: 1.6;
+    }
+
+    /* INSIGHTS TABLE */
+    .insights-table {
+      width: 100%; border-collapse: collapse; margin-top: 1.5rem;
+    }
+
+    .insights-table th {
+      font-family: 'Syne', sans-serif; font-size: 0.78rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent); padding: 0.75rem 1rem;
+      text-align: left; border-bottom: 1px solid var(--border);
+    }
+
+    .insights-table td {
+      padding: 0.9rem 1rem; font-size: 0.88rem;
+      border-bottom: 1px solid rgba(30, 41, 59, 0.7);
+      color: var(--muted); vertical-align: top;
+    }
+
+    .insights-table td:first-child { color: var(--white); font-weight: 400; }
+
+    .insights-table tr:last-child td { border-bottom: none; }
+
+    /* RECOMMENDATIONS */
+    .rec-list { margin-top: 1.5rem; }
+
+    .rec-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+      margin-bottom: 1.25rem; padding: 1.25rem;
+      background: var(--navy-mid); border: 1px solid var(--border);
+      border-radius: 0.6rem;
+    }
+
+    .rec-icon {
+      width: 36px; height: 36px; border-radius: 0.4rem;
+      background: rgba(56, 189, 248, 0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+
+    .rec-text h4 {
+      font-family: 'Syne', sans-serif; font-size: 0.95rem;
+      font-weight: 700; margin-bottom: 0.35rem;
+    }
+
+    .rec-text p {
+      font-size: 0.86rem; color: var(--muted); line-height: 1.65;
+    }
+
+    /* SIDEBAR */
+    .sidebar { position: sticky; top: 5rem; }
+
+    .sidebar-card {
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem; padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .sidebar-card h3 {
+      font-family: 'Syne', sans-serif; font-size: 0.9rem;
+      font-weight: 700; margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    .sidebar-list { list-style: none; }
+    .sidebar-list li {
+      font-size: 0.85rem; color: var(--muted);
+      padding: 0.45rem 0; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .sidebar-list li:last-child { border-bottom: none; }
+    .sidebar-list li::before { content: '▸'; color: var(--accent); font-size: 0.7rem; }
+
+    .toc-link {
+      font-size: 0.83rem; color: var(--muted);
+      text-decoration: none; display: block;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s; padding-left: 0.5rem;
+      border-left: 2px solid transparent;
+    }
+    .toc-link:last-child { border-bottom: none; }
+    .toc-link:hover { color: var(--accent); border-left-color: var(--accent); }
+
+    /* BACK LINK */
+    .back-section {
+      max-width: 1100px; margin: 0 auto;
+      padding: 2rem 4rem 4rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-secondary {
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: var(--accent); padding: 0.75rem 1.75rem;
+      border-radius: 0.4rem;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600; font-size: 0.88rem;
+      letter-spacing: 0.04em; text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+      display: inline-block;
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.06);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center; padding: 2rem 4rem;
+      color: var(--muted); font-size: 0.82rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .project-hero { padding: 7rem 1.5rem 3rem; }
+      .content-wrap { grid-template-columns: 1fr; padding: 2rem 1.5rem; gap: 2rem; }
+      .sidebar { position: static; }
+      .findings-grid { grid-template-columns: 1fr; }
+      .project-meta { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-logo">Taiwo<span>.</span>Araoye</a>
+    <a href="../index.html#projects" class="nav-back">Back to Projects</a>
+  </nav>
+
+  <!-- PROJECT HERO -->
+  <div class="project-hero">
+    <div class="breadcrumb"><a href="../index.html">Home</a> / <a href="../index.html#projects">Projects</a> / Core Banking Analytics</div>
+    <div class="project-tags">
+      <span class="tag">Excel</span>
+      <span class="tag">Pivot Tables</span>
+      <span class="tag">Data Cleaning</span>
+      <span class="tag">Dashboard</span>
+      <span class="tag">Banking</span>
+    </div>
+    <h1>Core Banking Analytics</h1>
+    <p class="lead">End-to-end analysis of a 5,000-record retail banking dataset — from raw data preparation through to an interactive executive dashboard with KPI cards, dynamic charts, and cross-filtering slicers.</p>
+
+    <div class="project-meta">
+      <div class="meta-item">
+        <div class="meta-label">Tool</div>
+        <div class="meta-value">Microsoft Excel</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Dataset</div>
+        <div class="meta-value">5,000 Rows · 40 Columns</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Domain</div>
+        <div class="meta-value">Retail Banking</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Deliverable</div>
+        <div class="meta-value">Executive Dashboard</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content-wrap">
+
+    <!-- MAIN -->
+    <div class="main-content">
+
+      <!-- KEY FINDINGS -->
+      <div class="section-block" id="findings">
+        <div class="block-label">Key Findings</div>
+        <h2 class="block-title">What the Data Revealed</h2>
+        <p class="body-text">Analysis of the core banking dataset surfaced six critical business insights across transaction behaviour, loan performance, account value distribution, and complaint resolution efficiency.</p>
+
+        <div class="findings-grid">
+          <div class="finding-card">
+            <div class="finding-number">$4.26M</div>
+            <div class="finding-label">Deposits lead all transaction types at 33.9% of total transaction volume</div>
+          </div>
+          <div class="finding-card">
+            <div class="finding-number">July</div>
+            <div class="finding-label">Peak transaction month with $1,141,756 in total transaction value</div>
+          </div>
+          <div class="finding-card">
+            <div class="finding-number">32.6%</div>
+            <div class="finding-label">Loan rejection rate — above the 20–25% industry benchmark, flagging a portfolio risk</div>
+          </div>
+          <div class="finding-card">
+            <div class="finding-number">$12.8M</div>
+            <div class="finding-label">Savings accounts hold 50.7% of total account balance across all account types</div>
+          </div>
+          <div class="finding-card">
+            <div class="finding-number">50.1%</div>
+            <div class="finding-label">Complaint resolution rate — with 50.08% of cases still pending resolution</div>
+          </div>
+          <div class="finding-card">
+            <div class="finding-number">124.7</div>
+            <div class="finding-label">Average complaint resolution time in days — indicating a significant backlog</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DATA PREPARATION -->
+      <div class="section-block" id="preparation">
+        <div class="block-label">Part 1</div>
+        <h2 class="block-title">Data Preparation & Transformation</h2>
+        <p class="body-text">Before analysis could begin, the raw dataset required significant preparation across four key tasks: date standardisation, missing value audit, derived column creation, and deduplication.</p>
+
+        <div class="process-steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h4>Date Field Standardisation</h4>
+              <p>Eight date columns were identified and standardised to DD/MM/YYYY format using Format Cells. A mixed alignment issue was discovered — left-aligned cells indicated text-stored dates rather than true date values.</p>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <strong>⚠ Issue Encountered</strong>
+            After applying date formatting, some cells remained left-aligned, confirming they were stored as text rather than true Excel date values.
+          </div>
+
+          <div class="resolution-block">
+            <strong>✔ Resolution Applied</strong>
+            Text to Columns with MDY format was applied to all eight date columns. After conversion, all cells became right-aligned — confirming true Excel date storage across the entire dataset.
+          </div>
+
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h4>Missing Value Audit</h4>
+              <p>A full dataset audit using Ctrl+A → F5 → Special → Blanks confirmed zero blank cells across all 5,000 rows and 40 columns. Treatment formulas were documented for completeness.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h4>Derived Column Creation</h4>
+              <p>Three new columns were added to enrich the dataset: Customer Full Name (concatenation of first and last name), Transaction Category (High Value vs Normal based on $100K threshold), and Loan Risk Flag (High Risk vs Low Risk based on loan approval status).</p>
+            </div>
+          </div>
+
+          <div class="code-block">
+            =A2&" "&B2  <span style="color:#475569">→ Customer Full Name</span><br>
+            =IF(Q2>100000,"High Value","Normal")  <span style="color:#475569">→ Transaction Category</span><br>
+            =IF(Z2="Rejected","High Risk","Low Risk")  <span style="color:#475569">→ Loan Risk Flag</span>
+          </div>
+
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <h4>Deduplication</h4>
+              <p>A composite key was created by joining Customer ID and Transaction ID. Remove Duplicates was run on this key — confirming all 5,000 records were unique with no duplicates in the dataset.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PIVOT ANALYSIS -->
+      <div class="section-block" id="pivots">
+        <div class="block-label">Part 2</div>
+        <h2 class="block-title">Pivot Table Analysis</h2>
+        <p class="body-text">Five pivot tables were built on a dedicated Pivot Analysis sheet, each designed to answer a specific business question across transaction behaviour, loan performance, account distribution, and complaint resolution.</p>
+
+        <table class="insights-table">
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>Key Finding</th>
+              <th>Metric</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Transaction Volume by Type</td>
+              <td>Deposits are the dominant transaction type</td>
+              <td>$4,257,446 (33.9%)</td>
+            </tr>
+            <tr>
+              <td>Monthly Transaction Trend</td>
+              <td>July is the peak transaction month</td>
+              <td>$1,141,756</td>
+            </tr>
+            <tr>
+              <td>Loan Portfolio Performance</td>
+              <td>Rejection rate exceeds industry benchmark</td>
+              <td>32.6% rejected</td>
+            </tr>
+            <tr>
+              <td>Customer Segmentation by Account</td>
+              <td>Savings accounts dominate total balance</td>
+              <td>$12.8M (50.7%)</td>
+            </tr>
+            <tr>
+              <td>Complaint Resolution Efficiency</td>
+              <td>Half of complaints remain unresolved</td>
+              <td>124.7 days avg.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="issue-block" style="margin-top:1.5rem;">
+          <strong>⚠ Issue: Negative Resolution Time Values</strong>
+          After calculating complaint resolution time (Resolution Date − Feedback Date), some cells returned negative values — logically impossible, caused by residual text-stored dates in the source system.
+        </div>
+
+        <div class="resolution-block">
+          <strong>✔ Resolution: ABS() Function Applied</strong>
+          The ABS (Absolute Value) function was wrapped around the date subtraction formula to convert any negative output to its positive equivalent — an accepted approach for banking CRM data where retroactive date entries are common.
+        </div>
+      </div>
+
+      <!-- LOOKUPS -->
+      <div class="section-block" id="lookups">
+        <div class="block-label">Part 3</div>
+        <h2 class="block-title">Lookup & Reference Functions</h2>
+        <p class="body-text">A dynamic search panel was built on a dedicated Lookups sheet, allowing retrieval of customer and loan data by simply updating the ID input cells. Three lookup methods were demonstrated and validated against each other.</p>
+
+        <div class="process-steps">
+          <div class="step">
+            <div class="step-num">V</div>
+            <div class="step-content">
+              <h4>VLOOKUP — Email Retrieval by Customer ID</h4>
+              <p>Retrieved customer email address from Column 9 of the full dataset using an exact match on Customer ID.</p>
+            </div>
+          </div>
+          <div class="code-block">=VLOOKUP(B3,core_banking!A:AN,9,FALSE)</div>
+
+          <div class="step">
+            <div class="step-num">X</div>
+            <div class="step-content">
+              <h4>XLOOKUP — Modern Lookup with Error Handling</h4>
+              <p>Retrieved the same email address using XLOOKUP, which does not require the lookup column to be leftmost and handles missing values natively without IFERROR.</p>
+            </div>
+          </div>
+          <div class="code-block">=XLOOKUP(B3,core_banking!A:A,core_banking!I:I,"Not Found")</div>
+
+          <div class="step">
+            <div class="step-num">I</div>
+            <div class="step-content">
+              <h4>INDEX / MATCH — Loan Amount by Loan ID</h4>
+              <p>Returned the loan amount for a given Loan ID using a two-stage formula: MATCH locates the row, INDEX retrieves the value.</p>
+            </div>
+          </div>
+          <div class="code-block">=INDEX(core_banking!U:U,MATCH(B4,core_banking!T:T,0))</div>
+        </div>
+
+        <p class="body-text" style="margin-top:1rem;">All three functions returned consistent, matching results — confirming formula accuracy across methods.</p>
+      </div>
+
+      <!-- RECOMMENDATIONS -->
+      <div class="section-block" id="recommendations">
+        <div class="block-label">Business Recommendations</div>
+        <h2 class="block-title">Actionable Insights for the Business</h2>
+        <p class="body-text">Three priority recommendations emerge directly from the pivot table findings, each targeting a measurable business outcome.</p>
+
+        <div class="rec-list">
+          <div class="rec-item">
+            <div class="rec-icon">📋</div>
+            <div class="rec-text">
+              <h4>Review Loan Approval Criteria</h4>
+              <p>A 32.6% rejection rate significantly exceeds the 20–25% industry benchmark. The business should audit rejection reasons to identify whether the policy is overly restrictive or the applicant pool requires better pre-screening.</p>
+            </div>
+          </div>
+          <div class="rec-item">
+            <div class="rec-icon">⏱️</div>
+            <div class="rec-text">
+              <h4>Reduce Complaint Resolution Time</h4>
+              <p>With 50% of complaints pending and an average resolution time of 124.7 days, a dedicated complaint resolution task force or SLA policy is recommended. Target: reduce average resolution to under 60 days within one quarter.</p>
+            </div>
+          </div>
+          <div class="rec-item">
+            <div class="rec-icon">📈</div>
+            <div class="rec-text">
+              <h4>Capitalise on Deposit Volume Trends</h4>
+              <p>Deposits represent the highest transaction type at $4.26M (33.9%). The business should investigate the July transaction peak to determine whether it is seasonal or driven by a specific product — and plan campaigns accordingly.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-card">
+        <h3>Contents</h3>
+        <a href="#findings" class="toc-link">Key Findings</a>
+        <a href="#preparation" class="toc-link">Data Preparation</a>
+        <a href="#pivots" class="toc-link">Pivot Analysis</a>
+        <a href="#lookups" class="toc-link">Lookup Functions</a>
+        <a href="#recommendations" class="toc-link">Recommendations</a>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Tools Used</h3>
+        <ul class="sidebar-list">
+          <li>Microsoft Excel</li>
+          <li>Pivot Tables</li>
+          <li>Power Query</li>
+          <li>VLOOKUP / XLOOKUP</li>
+          <li>INDEX / MATCH</li>
+          <li>DAX-style KPI Cards</li>
+          <li>Slicers & Filters</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Dataset</h3>
+        <ul class="sidebar-list">
+          <li>5,000 records</li>
+          <li>40 columns</li>
+          <li>8 date fields</li>
+          <li>5 pivot tables</li>
+          <li>3 derived columns</li>
+          <li>3 lookup scenarios</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Skills Demonstrated</h3>
+        <ul class="sidebar-list">
+          <li>Data Cleaning</li>
+          <li>Issue Documentation</li>
+          <li>Business Interpretation</li>
+          <li>Dashboard Design</li>
+          <li>Analytical Thinking</li>
+        </ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- BACK -->
+  <div class="back-section">
+    <a href="../index.html#projects" class="btn-secondary">← Back to All Projects</a>
+  </div>
+
+  <footer>
+    <p>© 2026 Taiwo Araoye · <a href="https://chosen2014.github.io">chosen2014.github.io</a></p>
+  </footer>
+
+</body>
+</html>
