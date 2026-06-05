@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Credmate Loan Portfolio Analytics | Taiwo Araoye</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0f172a;
+      --navy-mid: #1e293b;
+      --navy-light: #334155;
+      --accent: #38bdf8;
+      --accent-dim: #0ea5e9;
+      --white: #f8fafc;
+      --muted: #94a3b8;
+      --border: #1e293b;
+      --green: #22c55e;
+      --red: #ef4444;
+      --amber: #f59e0b;
+      --teal: #14b8a6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem 4rem;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1.1rem;
+      letter-spacing: 0.05em; color: var(--white); text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-back {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.88rem; font-weight: 400;
+      letter-spacing: 0.04em; display: flex; align-items: center; gap: 0.5rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--accent); }
+    .nav-back::before { content: '←'; font-size: 1rem; }
+
+    /* HERO BANNER */
+    .project-hero {
+      padding: 9rem 4rem 5rem;
+      max-width: 1100px; margin: 0 auto;
+    }
+
+    .breadcrumb {
+      font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .breadcrumb span { color: var(--muted); }
+
+    .project-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 2rem; padding: 0.4rem 1rem;
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1.5rem;
+    }
+    .badge-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .project-hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -0.02em; margin-bottom: 1.5rem;
+    }
+    .project-hero h1 em { color: var(--accent); font-style: normal; }
+
+    .project-hero-sub {
+      font-size: 1.1rem; color: var(--muted);
+      max-width: 620px; margin-bottom: 2.5rem; line-height: 1.8;
+    }
+
+    .hero-tags { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .tag {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.28rem 0.75rem;
+      border-radius: 2rem; border: 1px solid rgba(56, 189, 248, 0.25); color: var(--accent);
+    }
+
+    /* KPI STRIP */
+    .kpi-strip {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      border: 1px solid var(--border); border-radius: 0.75rem;
+      overflow: hidden; margin: 0 4rem 0;
+      max-width: 1100px; margin-left: auto; margin-right: auto;
+    }
+
+    .kpi {
+      padding: 2rem 1.5rem;
+      border-right: 1px solid var(--border);
+      position: relative;
+      background: var(--navy-mid);
+    }
+    .kpi:last-child { border-right: none; }
+    .kpi::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+    .kpi.green::before { background: var(--green); }
+    .kpi.red::before { background: var(--red); }
+    .kpi.amber::before { background: var(--amber); }
+    .kpi.teal::before { background: var(--teal); }
+    .kpi.blue::before { background: var(--accent); }
+
+    .kpi-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem; font-weight: 800;
+      line-height: 1; margin-bottom: 0.4rem; color: var(--white);
+    }
+    .kpi-label {
+      font-size: 0.75rem; color: var(--muted);
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+
+    /* MAIN CONTENT */
+    .content-wrapper {
+      max-width: 1100px; margin: 0 auto;
+      padding: 5rem 4rem;
+      display: grid; grid-template-columns: 1fr 280px; gap: 5rem;
+    }
+
+    .main-content > * { margin-bottom: 4rem; }
+
+    .section-label {
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.75rem;
+    }
+
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem; font-weight: 700;
+      line-height: 1.25; margin-bottom: 1.25rem;
+    }
+
+    p { color: var(--muted); margin-bottom: 1rem; font-size: 0.95rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* DASHBOARD EMBED */
+    .dashboard-section { margin-bottom: 4rem; }
+    .dashboard-frame {
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      overflow: hidden; position: relative;
+    }
+    .dashboard-header {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.9rem 1.25rem;
+      background: rgba(56, 189, 248, 0.05);
+      border-bottom: 1px solid var(--border);
+    }
+    .dash-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .dash-dot.red-d { background: #ff5f57; }
+    .dash-dot.amber-d { background: #ffbd2e; }
+    .dash-dot.green-d { background: #28c840; }
+    .dashboard-title {
+      font-size: 0.78rem; color: var(--muted);
+      letter-spacing: 0.06em; margin-left: 0.5rem;
+    }
+    .dashboard-frame iframe {
+      width: 100%; height: 540px; border: none; display: block;
+    }
+    .iframe-fallback {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      height: 400px; gap: 1.25rem;
+      text-align: center; padding: 2rem;
+    }
+    .iframe-fallback .icon {
+      font-size: 3rem; line-height: 1;
+    }
+    .iframe-fallback h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem; color: var(--white); margin-bottom: 0.4rem;
+    }
+    .iframe-fallback p {
+      font-size: 0.88rem; color: var(--muted); max-width: 300px;
+    }
+    .iframe-fallback a {
+      display: inline-block;
+      background: var(--accent); color: var(--navy);
+      padding: 0.7rem 1.75rem;
+      border-radius: 0.4rem;
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.88rem; letter-spacing: 0.04em;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .iframe-fallback a:hover { background: var(--accent-dim); }
+
+    /* CHART CARDS */
+    .chart-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1.25rem; margin-top: 1.5rem;
+    }
+    .chart-card {
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      border-radius: 0.65rem; overflow: hidden;
+    }
+    .chart-card-header {
+      padding: 1rem 1.25rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.82rem; font-weight: 700;
+      color: var(--white); letter-spacing: 0.03em;
+    }
+    .chart-card-body { padding: 1.25rem; }
+
+    /* Mini bar chart */
+    .mini-bar { margin-bottom: 0.6rem; }
+    .mini-bar-label {
+      display: flex; justify-content: space-between;
+      font-size: 0.75rem; margin-bottom: 0.3rem;
+    }
+    .mini-bar-label span:first-child { color: var(--muted); }
+    .mini-bar-label span:last-child {
+      font-family: 'Syne', sans-serif; font-weight: 700; color: var(--white);
+    }
+    .mini-bar-track {
+      height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px;
+    }
+    .mini-bar-fill {
+      height: 100%; border-radius: 3px;
+      transition: width 1s ease;
+    }
+
+    /* Funnel */
+    .funnel-row {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 0.65rem;
+    }
+    .funnel-label { font-size: 0.78rem; color: var(--muted); min-width: 110px; }
+    .funnel-bar-wrap { flex: 1; }
+    .funnel-bar {
+      height: 24px; border-radius: 3px;
+      display: flex; align-items: center; padding: 0 0.6rem;
+    }
+    .funnel-bar span {
+      font-family: 'Syne', sans-serif; font-size: 0.75rem;
+      font-weight: 700; color: var(--navy);
+    }
+    .funnel-pct {
+      font-size: 0.72rem; color: var(--muted); min-width: 40px; text-align: right;
+    }
+
+    /* Scatter */
+    .scatter-wrap { position: relative; height: 200px; }
+    .scatter-wrap svg { width: 100%; height: 100%; overflow: visible; }
+
+    /* Waterfall */
+    .waterfall-wrap { overflow-x: auto; }
+    .wf-bars { display: flex; align-items: flex-end; gap: 4px; height: 120px; }
+    .wf-bar-group { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 1; }
+    .wf-bar { border-radius: 2px 2px 0 0; min-width: 20px; transition: opacity 0.2s; }
+    .wf-bar:hover { opacity: 0.8; }
+    .wf-label { font-size: 0.6rem; color: var(--muted); text-align: center; margin-top: 4px; }
+    .wf-val { font-family: 'Syne', sans-serif; font-size: 0.62rem; font-weight: 700; color: var(--white); }
+
+    /* Key Influencer */
+    .influencer-row {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .influencer-row:last-child { border-bottom: none; }
+    .inf-icon {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; flex-shrink: 0;
+    }
+    .inf-icon.red-bg { background: rgba(239, 68, 68, 0.15); }
+    .inf-icon.amber-bg { background: rgba(245, 158, 11, 0.15); }
+    .inf-icon.blue-bg { background: rgba(56, 189, 248, 0.15); }
+    .inf-text { flex: 1; }
+    .inf-main { font-size: 0.82rem; color: var(--white); font-weight: 500; }
+    .inf-sub { font-size: 0.72rem; color: var(--muted); }
+    .inf-mult {
+      font-family: 'Syne', sans-serif; font-size: 0.88rem;
+      font-weight: 800; color: var(--red);
+    }
+
+    /* MAP placeholder */
+    .map-placeholder {
+      background: linear-gradient(135deg, #0d1f38 0%, #0f2d4a 50%, #0b1929 100%);
+      border-radius: 0.5rem; height: 180px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .map-placeholder::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 35% 60%, rgba(56,189,248,0.08) 0%, transparent 60%),
+                  radial-gradient(circle at 70% 30%, rgba(20,184,166,0.06) 0%, transparent 50%);
+    }
+    .map-dots {
+      position: absolute; inset: 0;
+    }
+    .map-dot {
+      position: absolute; border-radius: 50%;
+      background: var(--accent); opacity: 0.7;
+    }
+    .map-dot::after {
+      content: ''; position: absolute;
+      border: 1px solid var(--accent); border-radius: 50%;
+      opacity: 0.3;
+      animation: ripple 2.5s ease-out infinite;
+    }
+    @keyframes ripple {
+      0% { inset: -2px; opacity: 0.4; }
+      100% { inset: -12px; opacity: 0; }
+    }
+    .map-label {
+      font-size: 0.75rem; color: var(--muted); z-index: 1;
+    }
+
+    /* FINDINGS BLOCKS */
+    .finding {
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 0.5rem; padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .finding.red-find { border-left-color: var(--red); }
+    .finding.green-find { border-left-color: var(--green); }
+    .finding.amber-find { border-left-color: var(--amber); }
+
+    .finding-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.88rem; font-weight: 700;
+      color: var(--white); margin-bottom: 0.4rem;
+    }
+    .finding p { font-size: 0.85rem; margin: 0; }
+
+    /* RECOMMENDATIONS */
+    .rec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.25rem; }
+    .rec-card {
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      border-radius: 0.65rem; padding: 1.25rem;
+    }
+    .rec-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem; font-weight: 800;
+      color: rgba(56, 189, 248, 0.15);
+      line-height: 1; margin-bottom: 0.5rem;
+    }
+    .rec-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.88rem; font-weight: 700;
+      color: var(--white); margin-bottom: 0.5rem;
+    }
+    .rec-card p { font-size: 0.82rem; }
+
+    /* SIDEBAR */
+    .sidebar { padding-top: 0.5rem; }
+    .sidebar-section {
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      border-radius: 0.65rem; padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .sidebar-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--white); margin-bottom: 1rem;
+      padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);
+    }
+    .sidebar-item {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 0.5rem;
+      padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 0.82rem;
+    }
+    .sidebar-item:last-child { border-bottom: none; }
+    .sidebar-item .key { color: var(--muted); flex-shrink: 0; }
+    .sidebar-item .val { color: var(--white); font-weight: 400; text-align: right; }
+    .sidebar-item .val a {
+      color: var(--accent); text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .sidebar-item .val a:hover { opacity: 0.7; }
+
+    .tool-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tool-chip {
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.2rem 0.6rem; border-radius: 2rem;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      color: var(--accent);
+    }
+
+    .cta-box {
+      background: linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(14,165,233,0.04) 100%);
+      border: 1px solid rgba(56,189,248,0.2); border-radius: 0.65rem;
+      padding: 1.5rem; text-align: center; margin-bottom: 1.25rem;
+    }
+    .cta-box p { font-size: 0.85rem; margin-bottom: 1rem; }
+    .btn-accent {
+      display: block; width: 100%;
+      background: var(--accent); color: var(--navy);
+      padding: 0.75rem 1rem; border-radius: 0.4rem;
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.82rem; letter-spacing: 0.04em;
+      text-decoration: none; text-align: center;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-accent:hover { background: var(--accent-dim); transform: translateY(-1px); }
+    .btn-outline {
+      display: block; width: 100%;
+      border: 1px solid rgba(56,189,248,0.3); color: var(--accent);
+      padding: 0.7rem 1rem; border-radius: 0.4rem; margin-top: 0.5rem;
+      font-family: 'Syne', sans-serif; font-weight: 600;
+      font-size: 0.82rem; letter-spacing: 0.04em;
+      text-decoration: none; text-align: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--accent); background: rgba(56,189,248,0.06); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center; padding: 2rem 4rem;
+      color: var(--muted); font-size: 0.82rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* ANIMATE */
+    .fade-up {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1.25rem 1.5rem; }
+      .project-hero { padding: 7rem 1.5rem 3rem; }
+      .kpi-strip { grid-template-columns: repeat(3, 1fr); margin: 0 1.5rem; }
+      .content-wrapper { grid-template-columns: 1fr; padding: 3rem 1.5rem; gap: 2rem; }
+      .chart-grid { grid-template-columns: 1fr; }
+      .rec-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="../index.html" class="nav-logo">Taiwo<span>.</span>Araoye</a>
+    <a href="../index.html#projects" class="nav-back">Back to Portfolio</a>
+  </nav>
+
+  <!-- PROJECT HERO -->
+  <div class="project-hero fade-up">
+    <div class="breadcrumb">
+      <a href="../index.html">Portfolio</a>
+      <span>/</span>
+      <span>Project 02</span>
+    </div>
+    <div class="project-badge">
+      <span class="badge-dot"></span>
+      Data Analytics — Assignment 4
+    </div>
+    <h1>Credmate <em>Loan Portfolio</em> Analytics</h1>
+    <p class="project-hero-sub">
+      A comprehensive Power BI dashboard examining ₦66.7M in lending activity across 1,000 Nigerian borrowers — surfacing credit risk patterns, employment-driven default drivers, and lender exposure profiles to support smarter underwriting decisions.
+    </p>
+    <div class="hero-tags">
+      <span class="tag">Power BI</span>
+      <span class="tag">Credit Risk Analytics</span>
+      <span class="tag">FinTech / MFB</span>
+      <span class="tag">Key Influencers</span>
+      <span class="tag">Decomposition Tree</span>
+      <span class="tag">Geospatial Mapping</span>
+    </div>
+  </div>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip fade-up">
+    <div class="kpi blue">
+      <div class="kpi-value">₦66.7M</div>
+      <div class="kpi-label">Total Portfolio (NGN)</div>
+    </div>
+    <div class="kpi green">
+      <div class="kpi-value">65.43%</div>
+      <div class="kpi-label">Avg Repayment Rate</div>
+    </div>
+    <div class="kpi teal">
+      <div class="kpi-value">572</div>
+      <div class="kpi-label">Avg Credit Score</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-value">100 days</div>
+      <div class="kpi-label">Avg Days Past Due</div>
+    </div>
+    <div class="kpi amber">
+      <div class="kpi-value">1,000</div>
+      <div class="kpi-label">Total Loans Analysed</div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="content-wrapper">
+    <div class="main-content">
+
+      <!-- INTRODUCTION -->
+      <div class="fade-up">
+        <div class="section-label">Company Overview</div>
+        <h2>About Credmate</h2>
+        <p>Credmate is a Nigerian digital lending platform operating in the microfinance and fintech sector. Its model sits at the intersection of data-driven risk assessment and accessible credit — offering short-to-medium-term loans to individuals across a broad spectrum of employment types, from civil servants and salary earners to traders and artisans.</p>
+        <p>The business partners with established lenders including Renmoney, FairMoney, Carbon, Branch, PalmCredit, and KiaKia, distributing credit across major Nigerian states. This analysis uses data from the Eazee MFB dataset, which captures 1,000 loan records spanning 2024–2025, covering loan disbursements, repayment outcomes, borrower demographics, credit scores, and lender relationships.</p>
+        <p>The objective of this dashboard is to give Credmate's risk officers and business analysts a single source of truth for portfolio health — enabling them to identify where losses are concentrated, which borrower segments present the highest risk, and where collection strategy should be intensified.</p>
+      </div>
+
+      <!-- LIVE DASHBOARD EMBED -->
+      <div class="dashboard-section fade-up">
+        <div class="section-label">Live Report</div>
+        <h2>Interactive Power BI Dashboard</h2>
+        <p>The dashboard below is fully interactive — use the filters for Loan Status, State, Employment Type, and Loan Purpose to drill into specific segments. Hover over any chart for detailed tooltips.</p>
+
+        <div class="dashboard-frame" style="margin-top: 1.5rem;">
+          <div class="dashboard-header">
+            <span class="dash-dot red-d"></span>
+            <span class="dash-dot amber-d"></span>
+            <span class="dash-dot green-d"></span>
+            <span class="dashboard-title">Credmate KPIs — Power BI Report · Live Embedded View</span>
+          </div>
+          <div class="iframe-fallback" id="embed-area">
+            <div class="icon">📊</div>
+            <h3>Credmate KPIs Dashboard</h3>
+            <p>Click below to open the fully interactive Power BI report in a new tab for the best experience.</p>
+            <a href="https://app.powerbi.com/groups/me/reports/b8b81a40-5c7f-461d-bb13-ff41cc9afbe2?pbi_source=desktop" target="_blank" rel="noopener noreferrer">
+              Open Live Dashboard ↗
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHART-BY-CHART ANALYSIS -->
+      <div class="fade-up">
+        <div class="section-label">Dashboard Analysis</div>
+        <h2>Reading the Dashboard — Chart by Chart</h2>
+        <p>Each visualisation below mirrors what appears in the Power BI report, presented here to explain what a business user should look for and act on.</p>
+
+        <div class="chart-grid">
+
+          <!-- LOAN COLLECTION FUNNEL -->
+          <div class="chart-card">
+            <div class="chart-card-header">📉 Loan Collection Funnel by Status</div>
+            <div class="chart-card-body">
+              <div class="funnel-row">
+                <span class="funnel-label">Fully Repaid</span>
+                <div class="funnel-bar-wrap">
+                  <div class="funnel-bar" style="background: #22c55e; width:100%;">
+                    <span>₦30.01M</span>
+                  </div>
+                </div>
+                <span class="funnel-pct">45%</span>
+              </div>
+              <div class="funnel-row">
+                <span class="funnel-label">Non-Performing</span>
+                <div class="funnel-bar-wrap">
+                  <div class="funnel-bar" style="background: #ef4444; width:86%;">
+                    <span>₦25.80M</span>
+                  </div>
+                </div>
+                <span class="funnel-pct">39%</span>
+              </div>
+              <div class="funnel-row">
+                <span class="funnel-label">Written Off</span>
+                <div class="funnel-bar-wrap">
+                  <div class="funnel-bar" style="background: #7f1d1d; width:24%;">
+                    <span>₦7.14M</span>
+                  </div>
+                </div>
+                <span class="funnel-pct">11%</span>
+              </div>
+              <div class="funnel-row">
+                <span class="funnel-label">Delinquent</span>
+                <div class="funnel-bar-wrap">
+                  <div class="funnel-bar" style="background: #f59e0b; width:12%;">
+                    <span>₦3.73M</span>
+                  </div>
+                </div>
+                <span class="funnel-pct">5.6%</span>
+              </div>
+              <div class="funnel-row">
+                <span class="funnel-label">Current</span>
+                <div class="funnel-bar-wrap">
+                  <div class="funnel-bar" style="background: #14b8a6; width:1%;">
+                    <span></span>
+                  </div>
+                </div>
+                <span class="funnel-pct">0.1%</span>
+              </div>
+              <p style="font-size:0.78rem; margin-top:0.75rem; color: var(--muted);">
+                <strong style="color:var(--red)">Key insight:</strong> Only 0.1% of loans are currently active — 55% of the portfolio is either non-performing or written off. This signals a serious collection bottleneck.
+              </p>
+            </div>
+          </div>
+
+          <!-- CREDIT SCORE vs REPAYMENT RATE SCATTER -->
+          <div class="chart-card">
+            <div class="chart-card-header">🔵 Credit Score vs Repayment Rate by Employment</div>
+            <div class="chart-card-body">
+              <div class="scatter-wrap">
+                <svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Axes -->
+                  <line x1="30" y1="150" x2="230" y2="150" stroke="#334155" stroke-width="1"/>
+                  <line x1="30" y1="20" x2="30" y2="150" stroke="#334155" stroke-width="1"/>
+                  <!-- Axis labels -->
+                  <text x="130" y="168" text-anchor="middle" fill="#64748b" font-size="8">Avg Credit Score</text>
+                  <text x="10" y="85" text-anchor="middle" fill="#64748b" font-size="8" transform="rotate(-90,10,85)">Repayment %</text>
+                  <!-- Score ticks -->
+                  <text x="48" y="160" fill="#64748b" font-size="7">560</text>
+                  <text x="88" y="160" fill="#64748b" font-size="7">570</text>
+                  <text x="128" y="160" fill="#64748b" font-size="7">580</text>
+                  <text x="168" y="160" fill="#64748b" font-size="7">590</text>
+                  <!-- Data points — (credit_score - 555)*4, (100-repayment_rate)*1.2 -->
+                  <!-- Freelancer 565, 62 -->
+                  <circle cx="70" cy="118" r="7" fill="#38bdf8" opacity="0.85"/>
+                  <text x="79" y="116" fill="#94a3b8" font-size="7">Freelancer</text>
+                  <!-- Civil servant 567, 63 -->
+                  <circle cx="78" cy="114" r="7" fill="#14b8a6" opacity="0.85"/>
+                  <text x="87" y="112" fill="#94a3b8" font-size="7">Civil servant</text>
+                  <!-- Salary earner 572, 68 -->
+                  <circle cx="98" cy="98" r="8" fill="#22c55e" opacity="0.85"/>
+                  <text x="107" y="96" fill="#94a3b8" font-size="7">Salary earner</text>
+                  <!-- Trader 576, 68 -->
+                  <circle cx="114" cy="98" r="7" fill="#f59e0b" opacity="0.85"/>
+                  <text x="123" y="96" fill="#94a3b8" font-size="7">Trader</text>
+                  <!-- Artisan 582, 68 -->
+                  <circle cx="138" cy="98" r="7" fill="#a855f7" opacity="0.85"/>
+                  <text x="147" y="96" fill="#94a3b8" font-size="7">Artisan</text>
+                  <!-- Student 587, 71 -->
+                  <circle cx="158" cy="90" r="7" fill="#ec4899" opacity="0.85"/>
+                  <text x="167" y="88" fill="#94a3b8" font-size="7">Student</text>
+                  <!-- Unemployed 590, 62 -->
+                  <circle cx="170" cy="118" r="7" fill="#ef4444" opacity="0.85"/>
+                  <text x="144" y="136" fill="#94a3b8" font-size="7">Unemployed</text>
+                </svg>
+              </div>
+              <p style="font-size:0.78rem; margin-top:0.5rem;">
+                <strong style="color:var(--accent)">Key insight:</strong> Students and salary earners combine high credit scores with the best repayment rates. Unemployed borrowers have high scores but low repayment — a red flag for underwriting.
+              </p>
+            </div>
+          </div>
+
+          <!-- KEY INFLUENCERS -->
+          <div class="chart-card">
+            <div class="chart-card-header">🧠 Key Influencers of Non-Performing Loans</div>
+            <div class="chart-card-body">
+              <div class="influencer-row">
+                <div class="inf-icon red-bg">⚠️</div>
+                <div class="inf-text">
+                  <div class="inf-main">Self-employed borrowers</div>
+                  <div class="inf-sub">Employment type → Non-Performing</div>
+                </div>
+                <div class="inf-mult">1.28×</div>
+              </div>
+              <div class="influencer-row">
+                <div class="inf-icon amber-bg">📍</div>
+                <div class="inf-text">
+                  <div class="inf-main">Ogun State loans</div>
+                  <div class="inf-sub">Geographic concentration risk</div>
+                </div>
+                <div class="inf-mult" style="color:var(--amber);">₦1.82M</div>
+              </div>
+              <div class="influencer-row">
+                <div class="inf-icon blue-bg">🏦</div>
+                <div class="inf-text">
+                  <div class="inf-main">Aella Credit exposure</div>
+                  <div class="inf-sub">Lender with highest NP share</div>
+                </div>
+                <div class="inf-mult" style="color:var(--accent);">₦200K</div>
+              </div>
+              <p style="font-size:0.78rem; margin-top:0.75rem;">
+                <strong style="color:var(--accent)">Key insight:</strong> Power BI's AI-driven Key Influencers visual automatically identified self-employment as the #1 driver of non-performance — 28% more likely than other employment types.
+              </p>
+            </div>
+          </div>
+
+          <!-- PORTFOLIO BREAKDOWN WATERFALL -->
+          <div class="chart-card">
+            <div class="chart-card-header">📊 Loan Portfolio Breakdown by Status</div>
+            <div class="chart-card-body">
+              <div class="mini-bar">
+                <div class="mini-bar-label"><span>Fully Repaid</span><span>₦30.01M</span></div>
+                <div class="mini-bar-track"><div class="mini-bar-fill" style="width:100%; background:var(--green);"></div></div>
+              </div>
+              <div class="mini-bar">
+                <div class="mini-bar-label"><span>Non-Performing</span><span>₦25.80M</span></div>
+                <div class="mini-bar-track"><div class="mini-bar-fill" style="width:86%; background:var(--red);"></div></div>
+              </div>
+              <div class="mini-bar">
+                <div class="mini-bar-label"><span>Written Off</span><span>₦7.14M</span></div>
+                <div class="mini-bar-track"><div class="mini-bar-fill" style="width:24%; background:#7f1d1d;"></div></div>
+              </div>
+              <div class="mini-bar">
+                <div class="mini-bar-label"><span>Delinquent</span><span>₦3.73M</span></div>
+                <div class="mini-bar-track"><div class="mini-bar-fill" style="width:12%; background:var(--amber);"></div></div>
+              </div>
+              <div class="mini-bar">
+                <div class="mini-bar-label"><span>Current</span><span>₦0.02M</span></div>
+                <div class="mini-bar-track"><div class="mini-bar-fill" style="width:0.1%; background:var(--teal);"></div></div>
+              </div>
+              <p style="font-size:0.78rem; margin-top:0.75rem;">
+                The waterfall chart in Power BI decomposes each loan purpose category — Medical, Phone Purchase, Market Goods — by its contribution to each status bucket, helping prioritise where collection efforts should be directed.
+              </p>
+            </div>
+          </div>
+
+          <!-- GEOGRAPHIC MAP -->
+          <div class="chart-card">
+            <div class="chart-card-header">🗺️ Loan Portfolio Distribution by State</div>
+            <div class="chart-card-body">
+              <div class="map-placeholder">
+                <div class="map-dots">
+                  <div class="map-dot" style="width:22px;height:22px;left:28%;top:72%;"></div>
+                  <div class="map-dot" style="width:16px;height:16px;left:22%;top:60%;"></div>
+                  <div class="map-dot" style="width:18px;height:18px;left:35%;top:55%;"></div>
+                  <div class="map-dot" style="width:14px;height:14px;left:38%;top:40%;"></div>
+                  <div class="map-dot" style="width:12px;height:12px;left:60%;top:30%;opacity:0.5;"></div>
+                  <div class="map-dot" style="width:10px;height:10px;left:55%;top:65%;opacity:0.4;"></div>
+                </div>
+                <span class="map-label">Nigeria — 14 States · Pie-chart overlays by loan status</span>
+              </div>
+              <p style="font-size:0.78rem; margin-top:0.75rem;">
+                <strong style="color:var(--accent)">Key insight:</strong> Lagos, Kano, and Plateau carry the largest portfolios. Ogun and Osun show disproportionately high non-performing ratios relative to their portfolio size, suggesting regional collection challenges.
+              </p>
+            </div>
+          </div>
+
+          <!-- MONTHLY DISBURSEMENTS -->
+          <div class="chart-card">
+            <div class="chart-card-header">📅 Monthly Disbursements vs Repayment Rate</div>
+            <div class="chart-card-body">
+              <div style="display:flex; align-items:flex-end; gap:3px; height:90px; margin-bottom:0.5rem;">
+                <!-- Bar heights roughly representing 2024 Q3–Q4 and 2025 data -->
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:2px;">
+                  <div style="flex:1; width:100%; display:flex; align-items:flex-end;">
+                    <div style="width:100%; border-radius:2px 2px 0 0;" class="wf-bar">
+                      <div style="height:40px; background:#38bdf8; border-radius:2px 2px 0 0; opacity:0.6;"></div>
+                    </div>
+                  </div>
+                  <span style="font-size:0.6rem; color:var(--muted);">Q3 24</span>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:2px;">
+                  <div style="flex:1; width:100%; display:flex; align-items:flex-end;">
+                    <div style="height:65px; background:#38bdf8; border-radius:2px 2px 0 0; width:100%; opacity:0.7;"></div>
+                  </div>
+                  <span style="font-size:0.6rem; color:var(--muted);">Q4 24</span>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:2px;">
+                  <div style="flex:1; width:100%; display:flex; align-items:flex-end;">
+                    <div style="height:80px; background:#38bdf8; border-radius:2px 2px 0 0; width:100%; opacity:0.85;"></div>
+                  </div>
+                  <span style="font-size:0.6rem; color:var(--muted);">Q1 25</span>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:2px;">
+                  <div style="flex:1; width:100%; display:flex; align-items:flex-end;">
+                    <div style="height:55px; background:#38bdf8; border-radius:2px 2px 0 0; width:100%; opacity:0.7;"></div>
+                  </div>
+                  <span style="font-size:0.6rem; color:var(--muted);">Q2 25</span>
+                </div>
+              </div>
+              <p style="font-size:0.78rem;">
+                The combo line-and-bar chart reveals that Q1 2025 saw peak disbursements. However, the repayment rate line does not rise proportionately, suggesting new cohorts are underperforming compared to earlier vintages.
+              </p>
+            </div>
+          </div>
+
+        </div><!-- end chart-grid -->
+
+        <!-- DECOMPOSITION TREE -->
+        <div class="finding" style="margin-top: 1.5rem; border-left-color: var(--teal);">
+          <div class="finding-title">🌳 Loan Loss Decomposition Tree</div>
+          <p>The decomposition tree drills from the ₦66.7M total portfolio → Fully Repaid (₦30M) → Non-Performing (₦25.8M) → Written Off (₦7.1M), then further into state (Ogun ₦1.82M, Osun ₦1.79M), employment type (Self-employed ₦455K, Salary earner ₦425K), lender (Aella Credit ₦200K, Carbon ₦155K), and loan purpose (Phone purchase ₦200K). This multi-level decomposition is one of Power BI's most powerful analytical tools — it lets a risk manager trace exactly where ₦1 of every bad loan originated.</p>
+        </div>
+
+      </div><!-- end chart section -->
+
+      <!-- KEY FINDINGS -->
+      <div class="fade-up">
+        <div class="section-label">Analysis</div>
+        <h2>Key Findings</h2>
+
+        <div class="finding red-find">
+          <div class="finding-title">⚠️ 55% of the Portfolio is At Risk</div>
+          <p>Combined, non-performing (₦25.8M), written-off (₦7.1M), and delinquent (₦3.7M) loans account for over half of total disbursements. Only ₦0.02M in loans are currently active and on track, pointing to a fundamental gap between disbursement velocity and collection capability.</p>
+        </div>
+
+        <div class="finding amber-find">
+          <div class="finding-title">🏢 Self-Employed Borrowers Drive Defaults</div>
+          <p>Power BI's Key Influencers AI model found that self-employed applicants are 1.28× more likely to become non-performing than any other employment segment. This group typically lacks payslip verification and has volatile income — making traditional credit scoring metrics less reliable.</p>
+        </div>
+
+        <div class="finding green-find">
+          <div class="finding-title">🎓 Students & Salary Earners Are Underserved</div>
+          <p>Students and salary earners cluster in the top-right of the credit score vs repayment scatter — meaning they have both high creditworthiness AND strong repayment behaviour. Yet these segments represent a small share of the portfolio. Credmate could safely grow here.</p>
+        </div>
+
+        <div class="finding red-find">
+          <div class="finding-title">📍 Ogun & Osun Show Regional Concentration Risk</div>
+          <p>The geospatial map reveals that Ogun (₦1.82M NP) and Osun (₦1.79M NP) carry the highest non-performing balances relative to their portfolio sizes. This may indicate weak local collection agents, economic shocks, or borrower profile mismatches in those states.</p>
+        </div>
+
+        <div class="finding" style="border-left-color: var(--teal);">
+          <div class="finding-title">📱 Phone Purchase Loans Have Mixed Outcomes</div>
+          <p>Phone purchase appears across both the non-performing and written-off buckets in the decomposition tree and waterfall chart. While popular, these asset-backed loans are difficult to recover — a phone depreciates rapidly and is easily hidden. Medical and school fees loans show better recovery patterns.</p>
+        </div>
+      </div>
+
+      <!-- RECOMMENDATIONS -->
+      <div class="fade-up">
+        <div class="section-label">Business Recommendations</div>
+        <h2>Strategic Recommendations for Credmate</h2>
+
+        <div class="rec-grid">
+          <div class="rec-card">
+            <div class="rec-number">01</div>
+            <div class="rec-title">Restrict Self-Employed Loan Limits</div>
+            <p>Cap loan amounts for self-employed applicants until income verification is strengthened. Introduce bank statement analysis or agency-verified cashflow checks before approving loans above ₦50,000 to this segment.</p>
+          </div>
+
+          <div class="rec-card">
+            <div class="rec-number">02</div>
+            <div class="rec-title">Grow the Salary Earner Segment</div>
+            <p>Salary earners and students show the best repayment behaviour. Credmate should develop employer-linked payroll deduction products for this segment, reducing collection friction and default risk simultaneously.</p>
+          </div>
+
+          <div class="rec-card">
+            <div class="rec-number">03</div>
+            <div class="rec-title">Deploy Field Agents in Ogun & Osun</div>
+            <p>The geographic concentration of non-performing loans in Ogun and Osun warrants dedicated recovery agents in these states. Consider partnering with local cooperative societies or community leaders to improve borrower contact rates.</p>
+          </div>
+
+          <div class="rec-card">
+            <div class="rec-number">04</div>
+            <div class="rec-title">Re-evaluate Phone Purchase Products</div>
+            <p>Phone purchase loans appear in both the NP and written-off buckets. Credmate should either require IMEI registration as collateral, shorten loan tenors for device purchases, or introduce device insurance as a loan condition.</p>
+          </div>
+
+          <div class="rec-card">
+            <div class="rec-number">05</div>
+            <div class="rec-title">Monitor Renmoney & Carbon Exposure</div>
+            <p>The lender exposure treemap shows Renmoney and Carbon carrying the largest share of the non-performing book. Renegotiate risk-sharing terms with these lenders or rebalance disbursements toward better-performing partnerships like Branch and PalmCredit.</p>
+          </div>
+
+          <div class="rec-card">
+            <div class="rec-number">06</div>
+            <div class="rec-title">Tighten Q1 Disbursement Pace</div>
+            <p>The monthly trend shows Q1 2025 had the highest disbursement volume but flat repayment rates — new cohorts may be lower quality. Credmate should implement cohort-level performance gates: if a monthly cohort's 30-day repayment rate falls below 60%, slow new approvals immediately.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end main-content -->
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <div class="cta-box">
+        <div class="section-label" style="text-align:center;">Live Report</div>
+        <p>View the fully interactive Power BI dashboard with all filters and drill-throughs enabled.</p>
+        <a href="https://app.powerbi.com/groups/me/reports/b8b81a40-5c7f-461d-bb13-ff41cc9afbe2?pbi_source=desktop"
+           target="_blank" rel="noopener noreferrer" class="btn-accent">
+          Open Power BI Report ↗
+        </a>
+        <a href="../index.html#projects" class="btn-outline">← All Projects</a>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">Project Details</div>
+        <div class="sidebar-item">
+          <span class="key">Assignment</span>
+          <span class="val">Assignment 4</span>
+        </div>
+        <div class="sidebar-item">
+          <span class="key">Programme</span>
+          <span class="val">Data Analytics PDP</span>
+        </div>
+        <div class="sidebar-item">
+          <span class="key">Dataset</span>
+          <span class="val">Eazee MFB (1,000 records)</span>
+        </div>
+        <div class="sidebar-item">
+          <span class="key">Period</span>
+          <span class="val">2024–2025</span>
+        </div>
+        <div class="sidebar-item">
+          <span class="key">Sector</span>
+          <span class="val">Fintech / Microfinance</span>
+        </div>
+        <div class="sidebar-item">
+          <span class="key">Portfolio Value</span>
+          <span class="val">₦66,690,000</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">Tools & Visuals Used</div>
+        <div class="tool-chips">
+          <span class="tool-chip">Power BI Desktop</span>
+          <span class="tool-chip">Map Chart</span>
+          <span class="tool-chip">Funnel Chart</span>
+          <span class="tool-chip">Scatter Plot</span>
+          <span class="tool-chip">Waterfall Chart</span>
+          <span class="tool-chip">Key Influencers AI</span>
+          <span class="tool-chip">Decomposition Tree</span>
+          <span class="tool-chip">Treemap</span>
+          <span class="tool-chip">Combo Chart</span>
+          <span class="tool-chip">Multi-row Card</span>
+          <span class="tool-chip">DAX Measures</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">Loan Status Breakdown</div>
+        <div class="sidebar-item">
+          <span class="key" style="color:var(--green);">✓ Fully Repaid</span>
+          <span class="val">₦30.01M (45%)</span>
+        </div>
+        <div class="sidebar-item">
+          <span class="key" style="color:var(--red);">✗ Non-Performing</span>
+          <span class="val">₦25.80M (39%)</span>
+        </div>
+        <div class="sidebar-item">
+          <span class="key" style="color:#7f1d1d;">✗ Written Off</span>
+          <span class="val">₦7.14M (11%)</span>
+        </div>
+        <div class="sidebar-item">
+          <span class="key" style="color:var(--amber);">⚡ Delinquent</span>
+          <span class="val">₦3.73M (5.6%)</span>
+        </div>
+        <div class="sidebar-item">
+          <span class="key" style="color:var(--teal);">● Current</span>
+          <span class="val">₦0.02M (0.1%)</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-title">Top Non-Performing States</div>
+        <div class="sidebar-item"><span class="key">Ogun</span><span class="val">₦1,815,000</span></div>
+        <div class="sidebar-item"><span class="key">Osun</span><span class="val">₦1,790,000</span></div>
+        <div class="sidebar-item"><span class="key">Kwara</span><span class="val">₦1,730,000</span></div>
+      </div>
+
+    </aside>
+  </div><!-- end content-wrapper -->
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Taiwo Araoye · <a href="https://chosen2014.github.io">chosen2014.github.io</a> · Assignment 4 — Data Analytics PDP</p>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
