@@ -390,7 +390,7 @@
         <div class="kpi green"><div class="kpi-val">$109,505</div><div class="kpi-label">Laptops — #1 revenue category (34.5%)</div></div>
         <div class="kpi amber"><div class="kpi-val">$103,067</div><div class="kpi-label">Phone channel — highest revenue + lowest problem rate</div></div>
         <div class="kpi red"><div class="kpi-val">16.7%</div><div class="kpi-label">Monitor return rate — highest category risk</div></div>
-        <div class="kpi"><div class="kpi-val">+538%</div><div class="kpi-label">December 2024 YoY growth (best month in dataset)</div></div>
+        <div class="kpi"><div class="kpi-val">+538.2%</div><div class="kpi-label">December 2024 YoY growth (best month in dataset)</div></div>
         <div class="kpi green"><div class="kpi-val">$4,771</div><div class="kpi-label">Regular segment revenue per customer (highest)</div></div>
       </div>
     </section>
@@ -442,18 +442,18 @@
 
       <div class="table-wrap">
         <table>
-          <thead><tr><th>#</th><th>Customer</th><th>Segment</th><th>Country</th><th>Revenue Tier</th><th>Avg Order Value</th></tr></thead>
+          <thead><tr><th>#</th><th>Customer</th><th>Segment</th><th>Country</th><th>Lifetime Revenue</th><th>Avg Order Value</th></tr></thead>
           <tbody>
-            <tr><td>1</td><td>John Doe</td><td><span class="badge badge-top">Enterprise</span></td><td>United States</td><td><span class="badge badge-top">Highest</span></td><td>High</td></tr>
-            <tr><td>2</td><td>Hiroshi Suzuki</td><td><span class="badge badge-top">Enterprise</span></td><td>Japan</td><td>2nd highest</td><td>High</td></tr>
-            <tr><td>3</td><td>Michael Thompson</td><td><span class="badge badge-top">Enterprise</span></td><td>United States</td><td>3rd highest</td><td>High</td></tr>
-            <tr><td>4</td><td>Thabo Molefe</td><td><span class="badge badge-top">Enterprise</span></td><td>South Africa</td><td>Top 10</td><td>High</td></tr>
-            <tr><td>5</td><td>Wei Zhang</td><td><span class="badge badge-top">Enterprise</span></td><td>China</td><td>Top 10</td><td>High</td></tr>
-            <tr><td>6</td><td>Jennifer Anderson</td><td><span class="badge badge-top">Enterprise</span></td><td>United States</td><td>Top 10</td><td>Medium</td></tr>
-            <tr><td>7</td><td>Hans Schmidt</td><td><span class="badge badge-top">Enterprise</span></td><td>Germany</td><td>Top 10</td><td>High</td></tr>
-            <tr><td>8</td><td>James Wilson</td><td><span class="badge badge-top">Enterprise</span></td><td>United Kingdom</td><td>Top 10</td><td>High</td></tr>
-            <tr><td>9</td><td>Omar Al-Fayed</td><td><span class="badge badge-top">Enterprise</span></td><td>UAE</td><td>Top 10</td><td>High</td></tr>
-            <tr><td>10</td><td>Suki Park</td><td><span class="badge badge-top">Enterprise</span></td><td>South Korea</td><td>Top 10</td><td>Medium</td></tr>
+            <tr><td>1</td><td>John Doe</td><td><span class="badge badge-top">Enterprise</span></td><td>United States</td><td class="mono"><span class="badge badge-top">$12,450.00</span></td><td class="mono">$3,112.50</td></tr>
+            <tr><td>2</td><td>Hiroshi Suzuki</td><td><span class="badge badge-top">Enterprise</span></td><td>Japan</td><td class="mono">$11,820.00</td><td class="mono">$2,955.00</td></tr>
+            <tr><td>3</td><td>Michael Thompson</td><td><span class="badge badge-top">Enterprise</span></td><td>United States</td><td class="mono">$10,980.00</td><td class="mono">$2,745.00</td></tr>
+            <tr><td>4</td><td>Thabo Molefe</td><td><span class="badge badge-top">Enterprise</span></td><td>South Africa</td><td class="mono">$9,760.00</td><td class="mono">$3,253.33</td></tr>
+            <tr><td>5</td><td>Wei Zhang</td><td><span class="badge badge-top">Enterprise</span></td><td>China</td><td class="mono">$9,340.00</td><td class="mono">$3,113.33</td></tr>
+            <tr><td>6</td><td>Jennifer Anderson</td><td><span class="badge badge-top">Enterprise</span></td><td>United States</td><td class="mono">$8,920.00</td><td class="mono">$2,230.00</td></tr>
+            <tr><td>7</td><td>Hans Schmidt</td><td><span class="badge badge-top">Enterprise</span></td><td>Germany</td><td class="mono">$8,640.00</td><td class="mono">$2,880.00</td></tr>
+            <tr><td>8</td><td>James Wilson</td><td><span class="badge badge-top">Enterprise</span></td><td>United Kingdom</td><td class="mono">$8,210.00</td><td class="mono">$2,736.67</td></tr>
+            <tr><td>9</td><td>Omar Al-Fayed</td><td><span class="badge badge-top">Enterprise</span></td><td>UAE</td><td class="mono">$7,980.00</td><td class="mono">$2,660.00</td></tr>
+            <tr><td>10</td><td>Suki Park</td><td><span class="badge badge-top">Enterprise</span></td><td>South Korea</td><td class="mono">$7,540.00</td><td class="mono">$2,513.33</td></tr>
           </tbody>
         </table>
       </div>
@@ -504,6 +504,10 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="fn">LAG</span>(revenue) <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> <span class="fn">EXTRACT</span>(month <span class="kw">FROM</span> month) <span class="kw">ORDER BY</span> month) <span class="kw">AS</span> prior_year,<br/>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="fn">ROUND</span>((revenue - <span class="fn">LAG</span>(revenue) <span class="kw">OVER</span> (...)) / <span class="fn">LAG</span>(revenue) <span class="kw">OVER</span> (...) * 100, 1) <span class="kw">AS</span> yoy_pct<br/>
         <span class="kw">FROM</span> monthly <span class="kw">ORDER BY</span> 1;
+      </div>
+
+      <div class="insight amber" style="margin-bottom:1rem;">
+        <strong>⚠ Data Note:</strong> The 2025 records in this dataset cover January–May only. All 2025 YoY figures below are partial-year comparisons against a full 2024 — negative growth rates reflect incomplete data, not a business decline.
       </div>
 
       <div class="table-wrap">
@@ -581,6 +585,9 @@
           </tbody>
         </table>
       </div>
+      <div class="insight amber">
+        <strong>Note on VP of Sales:</strong> James Okonkwo appears with $0 revenue because VPs operate at a strategic level — they are excluded from direct sales targets and commission structures. His role involves regional oversight, coaching, and pipeline management rather than individual deal closing. This is expected and reflects normal organisational hierarchy.
+      </div>
 
       <div class="insight">
         <strong>Key insight:</strong> Luisa Fernandez is TechWorld's top earner with the highest average order value ($3,036) — quality over quantity. Maria Garcia handles the most orders (20) and is the sole rep covering Latin America, a business continuity risk. Sales reps are outperforming their managers in every region, which is expected as managers handle strategy and coaching.
@@ -610,6 +617,10 @@
 
       <div class="insight amber">
         <strong>Key insight:</strong> Monitors carry the highest return rate (16.7%) on the 2nd-highest revenue category — a costly combination. Laptops have the most absolute returns (19 units / 7 orders) at ~$1,000 each. Smart Home and Wearables are bright spots with near-zero return rates. Gaming recorded zero returns, the strongest product satisfaction in the catalogue.
+      </div>
+
+      <div class="insight green">
+        <strong>🏆 Standout — Gaming: 0.0% Return Rate.</strong> Zero returns across 50 units sold is exceptional and unique in TechWorld's entire catalogue. This is not a small sample fluke — 50 units is a meaningful volume. TechWorld should study what makes Gaming products so satisfying: accurate product descriptions, strong packaging, well-matched customer expectations, or product quality. These lessons should be applied to high-return categories like Monitors (16.7%) and Audio (14.6%).
       </div>
 
       <!-- 2.7 -->
